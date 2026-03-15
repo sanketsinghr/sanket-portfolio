@@ -21,11 +21,11 @@ const caveat = Caveat({
 });
 
 export const metadata: Metadata = {
-  title: "Sanket Singh — AI Creator",
+  title: "Sanket Singh - AI Mechanic",
   description:
     "AI-generated films, anime, and visual worlds. Creator portfolio showcasing Ashtar, Tippo, and the Atelier creative engine.",
   openGraph: {
-    title: "Sanket Singh — AI Creator",
+    title: "Sanket Singh — AI Mechanic",
     description:
       "AI-generated films, anime, and visual worlds.",
     type: "website",
@@ -35,13 +35,13 @@ export const metadata: Metadata = {
         url: "/og-image.jpg",
         width: 1200,
         height: 630,
-        alt: "Sanket Singh — AI Creator",
+        alt: "Sanket Singh — AI Mechanic",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Sanket Singh — AI Creator",
+    title: "Sanket Singh — AI Mechanic",
     description:
       "AI-generated films, anime, and visual worlds.",
     images: ["/og-image.jpg"],
