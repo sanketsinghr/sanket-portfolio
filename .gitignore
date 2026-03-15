@@ -39,3 +39,19 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# audit screenshots and dev scripts
+/screenshots
+/screenshots-audit
+/screenshot*.mjs
+/scripts/capture-screenshots.mjs
+
+# audit reports (generated artefacts)
+/*-REPORT.md
+/*-AUDIT-REPORT.md
+/COMPACT-AUDIT-REPORT.md
+/FULL-SCROLL-AUDIT-REPORT.md
+/REDESIGN-AUDIT-REPORT.md
+/TIGHTENED-AUDIT-REPORT.md
+/VERIFICATION-REPORT.md
+/VISUAL-AUDIT-REPORT.md

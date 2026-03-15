@@ -1,26 +1,326 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-bg-primary: #050505;
+  --color-bg-secondary: #0a0a0a;
+  --font-display: "Playfair Display", serif;
+  --font-body: "Inter", sans-serif;
+  --font-hand: "Caveat", cursive;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@layer base {
+  *,
+  ::before,
+  ::after {
+    box-sizing: border-box;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+html {
+  scroll-behavior: smooth;
+  scrollbar-width: thin;
+  scrollbar-color: #1a1a1a #050505;
 }
+
+body {
+  background: #050505;
+  color: #e8e4dc;
+  font-family: var(--font-body);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+::-webkit-scrollbar {
+  width: 4px;
+}
+::-webkit-scrollbar-track {
+  background: #050505;
+}
+::-webkit-scrollbar-thumb {
+  background: #1a1a1a;
+  border-radius: 2px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #2a2a2a;
+}
+
+::selection {
+  background: rgba(212, 160, 72, 0.3);
+  color: #fff;
+}
+
+/* Film grain — subtle texture */
+.grain-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  pointer-events: none;
+  opacity: 0.03;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 200px 200px;
+  mix-blend-mode: overlay;
+}
+
+/* Gradient text utilities */
+.text-gradient-amber {
+  background: linear-gradient(135deg, #d4a048 0%, #e8b84a 50%, #c4722a 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.text-gradient-pink {
+  background: linear-gradient(135deg, #ff6b9d 0%, #e855a0 50%, #d4507a 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Hide scrollbar for filmstrips */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Smooth image loading */
+img {
+  image-rendering: auto;
+}
+
+/* Prevent layout shift on fonts */
+@font-face {
+  font-display: swap;
+}
+
+/* === COMIC MODE === */
+
+/* Wrapper — sets light background for entire comic mode */
+.comic-wrapper {
+  background-color: #ece6d0 !important;
+  color: #111 !important;
+}
+
+/* Section tints */
+.comic-ashtar  { --comic-accent: #c4841d; }
+.comic-tippo   { --comic-accent: #e8336d; }
+.comic-neutral { --comic-accent: #333; }
+
+/* Halftone dot overlay — visible on light backgrounds */
+.comic-halftone {
+  position: fixed;
+  inset: 0;
+  z-index: 999;
+  pointer-events: none;
+  opacity: 0.15;
+  background-image: radial-gradient(circle, #000 1px, transparent 1px);
+  background-size: 5px 5px;
+}
+
+/* Comic page frame — cream paper with thick black borders */
+.comic-page {
+  border: 4px solid #111 !important;
+  background-color: #f8f4e8 !important;
+  padding: 12px;
+  position: relative;
+}
+.comic-ashtar .comic-page  { background-color: #fdf4e3 !important; }
+.comic-tippo .comic-page   { background-color: #fde8f0 !important; }
+.comic-neutral .comic-page { background-color: #f0ece0 !important; }
+
+@media (min-width: 768px) {
+  .comic-page {
+    padding: 20px;
+  }
+}
+
+/* Panel — thick black ink borders */
+.comic-panel {
+  border: 3px solid #111 !important;
+  overflow: hidden;
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+  box-shadow: 3px 3px 0px rgba(0,0,0,0.25);
+}
+.comic-panel:hover {
+  box-shadow: 4px 4px 0px rgba(0,0,0,0.35);
+}
+.comic-panel-tall {
+  border-width: 3.5px !important;
+}
+.comic-panel-wide {
+  border-width: 3px !important;
+}
+@media (max-width: 640px) {
+  .comic-panel { border-width: 2.5px !important; }
+  .comic-panel-tall { border-width: 3px !important; }
+}
+
+/* Dynamic panel tilts — subtle asymmetry */
+.comic-tilt-1 { transform: rotate(0.6deg); }
+.comic-tilt-2 { transform: rotate(-0.5deg); }
+.comic-tilt-3 { transform: rotate(0.8deg); }
+.comic-tilt-4 { transform: rotate(-0.7deg); }
+.comic-tilt-5 { transform: rotate(0.4deg) skewY(-0.3deg); }
+.comic-tilt-6 { transform: rotate(-0.4deg) skewY(0.3deg); }
+
+/* Caption box — narration rectangle with black border */
+.comic-caption {
+  display: inline-block;
+  background: #fff8dc !important;
+  color: #111 !important;
+  padding: 8px 16px;
+  font-family: var(--font-display);
+  font-size: 12px;
+  font-weight: 700;
+  font-style: italic;
+  line-height: 1.5;
+  letter-spacing: 0.01em;
+  border: 2.5px solid #111 !important;
+  box-shadow: 2px 2px 0px rgba(0,0,0,0.2);
+}
+@media (min-width: 768px) {
+  .comic-caption {
+    padding: 10px 22px;
+    font-size: 14px;
+  }
+}
+
+/* Caption tilt variants */
+.comic-caption-tilt-left  { transform: rotate(-1.2deg); }
+.comic-caption-tilt-right { transform: rotate(1deg); }
+
+/* Caption color variants */
+.comic-caption-amber {
+  background: #ffeaa7 !important;
+  box-shadow: 3px 3px 0px rgba(180,120,20,0.35);
+}
+.comic-caption-warm {
+  background: #ffe0cc !important;
+  box-shadow: 3px 3px 0px rgba(160,80,40,0.3);
+}
+.comic-caption-gold {
+  background: #fdf0c4 !important;
+  box-shadow: 3px 3px 0px rgba(140,100,0,0.3);
+}
+.comic-caption-pink {
+  background: #ffd6e8 !important;
+  box-shadow: 3px 3px 0px rgba(200,60,100,0.25);
+}
+.comic-caption-sage {
+  background: #e0ecd8 !important;
+  box-shadow: 3px 3px 0px rgba(60,100,40,0.25);
+}
+
+/* Speech bubble */
+.comic-bubble {
+  background: #fff !important;
+  color: #111 !important;
+  padding: 14px 18px;
+  border-radius: 20px;
+  position: relative;
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 15px;
+  border: 3px solid #111 !important;
+  box-shadow: 3px 3px 0px rgba(0,0,0,0.2);
+}
+.comic-bubble-tail-left::after {
+  content: "";
+  position: absolute;
+  bottom: -12px;
+  left: 24px;
+  width: 0;
+  height: 0;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-top: 14px solid #fff;
+}
+.comic-bubble-tail-left::before {
+  content: "";
+  position: absolute;
+  bottom: -16px;
+  left: 22px;
+  width: 0;
+  height: 0;
+  border-left: 12px solid transparent;
+  border-right: 12px solid transparent;
+  border-top: 17px solid #111;
+  z-index: -1;
+}
+.comic-bubble-tail-center::after {
+  content: "";
+  position: absolute;
+  bottom: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-top: 14px solid #fff;
+}
+.comic-bubble-tail-center::before {
+  content: "";
+  position: absolute;
+  bottom: -16px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 12px solid transparent;
+  border-right: 12px solid transparent;
+  border-top: 17px solid #111;
+  z-index: -1;
+}
+
+/* Left-pointing tail (horizontal — bubble on right, tail points left at circle) */
+.comic-bubble-tail-left-side::after {
+  content: "";
+  position: absolute;
+  left: -12px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 0;
+  height: 0;
+  border-top: 10px solid transparent;
+  border-bottom: 10px solid transparent;
+  border-right: 14px solid #fff;
+}
+.comic-bubble-tail-left-side::before {
+  content: "";
+  position: absolute;
+  left: -16px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 0;
+  height: 0;
+  border-top: 12px solid transparent;
+  border-bottom: 12px solid transparent;
+  border-right: 17px solid #111;
+  z-index: -1;
+}
+
+/* Page label — bold badge style */
+.comic-page-label {
+  display: inline-block;
+  font-family: var(--font-body);
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: #fff !important;
+  background: var(--comic-accent, #333) !important;
+  padding: 3px 10px;
+  margin-bottom: 10px;
+}
+@media (min-width: 768px) {
+  .comic-page-label {
+    font-size: 11px;
+    padding: 4px 12px;
+  }
+}
+
+/* === END COMIC MODE === */
